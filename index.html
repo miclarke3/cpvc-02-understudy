@@ -3,104 +3,210 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>The Understudy | CPVC starter</title>
+  <title>Which project to ask about | Finance Showcase</title>
   <style>
-    :root { color-scheme: light; --paper: #f5f3ed; --ink: #172e33; --teal: #24574e; }
+    :root { color-scheme: light; --paper: #f5f3ed; --ink: #172e33; --muted: #4d5f60; --rule: #c3cdc5; --teal: #24574e; }
     * { box-sizing: border-box; }
     body { margin: 0; background: var(--paper); color: var(--ink); font: 18px/1.6 Georgia, "Times New Roman", serif; }
     main { max-width: 760px; margin: auto; padding: 48px 24px; }
-    h1, h2, button, .label { font-family: Arial, sans-serif; }
-    h1 { font-size: clamp(32px, 6vw, 52px); line-height: 1.08; letter-spacing: -.035em; margin: 20px 0; }
-    h2 { font-size: 23px; margin: 36px 0 8px; }
-    .label { color: var(--teal); font-size: 13px; letter-spacing: .06em; }
+    h1, h2, button, .label, .source { font-family: Arial, sans-serif; }
+    h1 { font-size: clamp(32px, 6vw, 52px); line-height: 1.08; letter-spacing: -.035em; margin: 12px 0 20px; }
+    h2 { font-size: 23px; margin: 48px 0 8px; }
+    .label { color: var(--teal); font-size: 13px; letter-spacing: .06em; text-transform: uppercase; margin: 0; max-width: none; }
+    main > .label { margin-bottom: 36px; }
     p { max-width: 60ch; }
+    .ask { border-left: 4px solid var(--teal); padding: 4px 0 4px 20px; margin: 28px 0 0; }
+    .ask p:last-child { font-size: 22px; line-height: 1.4; margin: 6px 0 0; }
     dl { margin: 20px 0; }
-    .row { display: flex; justify-content: space-between; gap: 20px; padding: 12px 0; border-bottom: 1px solid #c3cdc5; }
-    dt { flex: 1; }
-    dd { margin: 0; font-family: Arial, sans-serif; font-variant-numeric: tabular-nums; }
+    .row { display: grid; grid-template-columns: 9em 1fr; gap: 20px; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+    dt { font-weight: bold; }
+    dd { margin: 0; }
+    .source { display: block; color: var(--muted); font-size: 14px; }
+    code { overflow-wrap: anywhere; font-size: .9em; }
+    .others { list-style: none; padding: 0; margin: 16px 0; }
+    .others li { padding: 12px 0; border-bottom: 1px solid var(--rule); }
+    .others strong { display: block; }
+    .gap { font-style: italic; color: var(--muted); }
     button { min-height: 44px; padding: 10px 18px; background: var(--teal); color: white; border: 0; font-size: 16px; cursor: pointer; }
     button:focus-visible, a:focus-visible { outline: 3px solid var(--teal); outline-offset: 4px; }
     button:active { background: var(--ink); }
     a { color: var(--teal); text-underline-offset: 3px; }
-    code { overflow-wrap: anywhere; font-size: .9em; }
-    .note { border-top: 2px solid var(--teal); margin-top: 32px; padding-top: 16px; }
+    footer { border-top: 2px solid var(--teal); margin-top: 48px; padding-top: 4px; font-size: 15px; color: var(--muted); }
     [hidden] { display: none !important; }
-    @media (max-width: 400px) { main { padding: 28px 20px; } }
   </style>
 </head>
 <body>
   <main>
-    <p class="label">CPVC / SESSION 02 / FICTIONAL TEACHING DATA</p>
-    <h1>What would you want<br>this reader to understand?</h1>
-    <p>Project counts are a starting point, not a story. Choose one reader and one
-      question before asking an agent to build your answer.</p>
-    <p id="status" role="status" aria-live="polite">Loading the local sample…</p>
+    <p class="label">Fictional teaching data</p>
+    <p id="status" role="status" aria-live="polite">Loading the sample profile.</p>
     <button id="retry" type="button" hidden>Try again</button>
-    <section id="snapshot" aria-labelledby="name" hidden>
-      <h2 id="name"></h2>
-      <p id="bio"></p>
-      <dl id="stats"></dl>
-      <p id="source"></p>
-      <p>Only listed projects are available to inspect. A README flag says a file
-        is present, not that it is good. These facts do not establish project quality.</p>
-    </section>
-    <div class="note">
-      <strong>This is the starter, not the answer.</strong>
-      <p>Write your six-line TARGET in SPEC.md. Add one reader rule to AGENTS.md.
-        Then turn these facts into something that helps that person decide.</p>
-      <a href="https://github.com/calpolyvibecoding-01/cpvc-02-understudy-template#readme">Session instructions</a>
-    </div>
+
+    <article id="page" hidden>
+      <section aria-labelledby="answer">
+        <p class="label">Recommendation for an analyst-internship interviewer</p>
+        <h1 id="answer"></h1>
+        <p id="why"></p>
+        <div class="ask">
+          <p class="label">Question to open with</p>
+          <p id="question"></p>
+        </div>
+      </section>
+
+      <section aria-labelledby="facts-heading">
+        <h2 id="facts-heading">Facts behind the recommendation</h2>
+        <p>Each value is copied from the profile file, with the field it came from.</p>
+        <dl id="facts"></dl>
+      </section>
+
+      <section aria-labelledby="limits-heading">
+        <h2 id="limits-heading">What these facts do not show</h2>
+        <p>They do not show whether the tool works well or has been used on real
+          portfolios. A README being present says nothing about its quality. Stars
+          are not proof of value to a business. The push date is a single date, not
+          a history of the work. That is what the opening question is for.</p>
+      </section>
+
+      <section aria-labelledby="others-heading">
+        <h2 id="others-heading">The other listed projects</h2>
+        <p id="others-note"></p>
+        <ul class="others" id="others"></ul>
+        <p class="source">Source: repos[].name, repos[].description, repos[].language, repos[].has_readme, repos[].fork</p>
+      </section>
+    </article>
+
+    <footer>
+      <p>Sample profile only. Not a real person and not a live GitHub snapshot.
+        Source file: <a href="profile-finance.json"><code>profile-finance.json</code></a></p>
+    </footer>
   </main>
   <script>
-    // Choose ONE fixture named in SPEC.md. Keep the supplied JSON files unchanged.
-    const PROFILE = 'profile-starter.json';
-    const status = document.getElementById('status');
-    const retry = document.getElementById('retry');
-    const snapshot = document.getElementById('snapshot');
+    // Built for the one fixture named in SPEC.md. The JSON files stay unchanged.
+    const PROFILE = 'profile-finance.json';
+    const LEAD = 'portfolio-rebalancer';
+    const LEAD_TOPICS = ['finance', 'investing'];
+
+    const $ = id => document.getElementById(id);
+    const status = $('status');
+    const retry = $('retry');
+    const page = $('page');
+
+    function formatDate(iso) {
+      const date = new Date(iso);
+      if (Number.isNaN(date.getTime())) return 'Not supplied';
+      return date.toLocaleDateString('en-US', { timeZone: 'UTC', year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    function showError(message) {
+      page.hidden = true;
+      status.hidden = false;
+      status.textContent = message;
+      retry.hidden = false;
+    }
+
+    function addFact(list, label, value, field) {
+      const row = document.createElement('div');
+      const term = document.createElement('dt');
+      const detail = document.createElement('dd');
+      const source = document.createElement('span');
+      row.className = 'row';
+      term.textContent = label;
+      detail.textContent = value;
+      source.className = 'source';
+      source.textContent = 'Source: ' + field;
+      detail.append(source);
+      row.append(term, detail);
+      list.append(row);
+    }
 
     async function loadProfile() {
-      snapshot.hidden = true;
+      page.hidden = true;
       retry.hidden = true;
-      status.textContent = 'Loading the local sample…';
+      status.hidden = false;
+      status.textContent = 'Loading the sample profile.';
+
+      let data;
       try {
         const response = await fetch(PROFILE);
         if (!response.ok) throw new Error('File could not be loaded.');
-        const data = await response.json();
-        if (!data.profile || !Array.isArray(data.repos) ||
-            data.repos.some(repo => !repo || typeof repo.name !== 'string' || typeof repo.has_readme !== 'boolean')) {
-          throw new Error('The sample needs a profile and a valid repos list.');
-        }
-        const rows = [
-          ['Listed projects', data.repos.length],
-          ['Listed projects with a README', data.repos.filter(repo => repo.has_readme).length],
-          ['Reported public repos', data.profile.public_repos ?? 'Not supplied']
-        ];
-        document.getElementById('name').textContent = data.profile.name || data.profile.login || 'Unnamed profile';
-        document.getElementById('bio').textContent = data.profile.bio || 'No bio supplied.';
-        const stats = document.getElementById('stats');
-        stats.replaceChildren();
-        for (const [label, value] of rows) {
-          const row = document.createElement('div');
-          row.className = 'row';
-          const term = document.createElement('dt');
-          const detail = document.createElement('dd');
-          term.textContent = label;
-          detail.textContent = String(value);
-          row.append(term, detail);
-          stats.append(row);
-        }
-        document.getElementById('source').textContent = 'Source: ' + PROFILE + ' · repos.length, repos[].has_readme, profile.public_repos';
-        snapshot.hidden = false;
-        status.textContent = data.repos.length ? 'Local sample loaded. No recommendation has been made.' : 'No listed projects. There is nothing to compare. Choose another supplied file in PROFILE and reload.';
+        data = await response.json();
       } catch (error) {
-        status.textContent = 'Could not read the sample. Check the PROFILE filename and JSON, then try again. Use GitHub Pages or a local web server, not a double-clicked file.';
-        retry.hidden = false;
+        showError('Could not read ' + PROFILE + '. Check that the file exists and is valid JSON, then try again. Open this page through GitHub Pages or a local web server, not as a double-clicked file.');
+        return;
       }
+
+      if (!data || !data.profile || !Array.isArray(data.repos) ||
+          data.repos.some(repo => !repo || typeof repo.name !== 'string' || typeof repo.has_readme !== 'boolean')) {
+        showError('The sample needs a profile and a valid repos list. Check ' + PROFILE + ', then try again.');
+        return;
+      }
+      if (!data.repos.length) {
+        showError('The sample lists no projects, so there is nothing to recommend. Choose another supplied file in PROFILE and reload.');
+        return;
+      }
+
+      // The recommendation only renders if the data still supports it.
+      const tagged = data.repos.filter(repo => Array.isArray(repo.topics) && repo.topics.some(topic => LEAD_TOPICS.includes(topic)));
+      const lead = tagged.length === 1 && tagged[0].name === LEAD && tagged[0].description ? tagged[0] : null;
+      if (!lead) {
+        showError('This data does not support the recommendation this page was built for, because ' + LEAD + ' is not the only described project tagged finance or investing. Check PROFILE in index.html, then try again.');
+        return;
+      }
+      const i = data.repos.indexOf(lead);
+
+      $('answer').textContent = 'Ask about ' + lead.name + ' first.';
+      $('why').textContent = 'It is the only listed project tagged finance or investing, and its description names a specific method: “' + lead.description + '”.';
+      $('question').textContent = 'How did you choose the drift bands, and what should happen when a holding moves outside one?';
+
+      const facts = $('facts');
+      facts.replaceChildren();
+      const others = data.repos.filter(repo => repo !== lead);
+      const mostStars = others.every(repo => (repo.stargazers_count ?? 0) < lead.stargazers_count);
+      addFact(facts, 'Description', lead.description, 'repos[' + i + '].description');
+      addFact(facts, 'Topics', lead.topics.join(', '), 'repos[' + i + '].topics');
+      addFact(facts, 'README', lead.has_readme ? 'Present' : 'Not present', 'repos[' + i + '].has_readme');
+      addFact(facts, 'Language', lead.language || 'Not supplied', 'repos[' + i + '].language');
+      if (Number.isInteger(lead.stargazers_count)) {
+        addFact(facts, 'Stars', lead.stargazers_count + (mostStars ? ', the most of any listed project' : ''),
+          'repos[' + i + '].stargazers_count' + (mostStars ? ', compared across repos[].stargazers_count' : ''));
+      }
+      addFact(facts, 'Last pushed', formatDate(lead.pushed_at), 'repos[' + i + '].pushed_at');
+
+      const reported = Number.isInteger(data.profile.public_repos)
+        ? ' The profile reports ' + data.profile.public_repos + ' public repos, but only listed projects can be inspected.'
+        : '';
+      $('others-note').textContent = 'The file lists ' + data.repos.length + ' projects.' + reported;
+
+      const list = $('others');
+      list.replaceChildren();
+      for (const repo of others) {
+        const item = document.createElement('li');
+        const name = document.createElement('strong');
+        const purpose = document.createElement('span');
+        const detail = document.createElement('span');
+        name.textContent = repo.name;
+        if (repo.description) {
+          purpose.textContent = repo.description;
+        } else {
+          purpose.className = 'gap';
+          purpose.textContent = 'Purpose not stated';
+        }
+        detail.className = 'source';
+        detail.textContent = [
+          repo.language || 'Language not supplied',
+          repo.has_readme ? 'README present' : 'No README',
+          repo.fork ? 'Fork of another project' : ''
+        ].filter(Boolean).join(' · ');
+        item.append(name, purpose, detail);
+        list.append(item);
+      }
+
+      status.textContent = '';
+      status.hidden = true;
+      page.hidden = false;
     }
+
     retry.addEventListener('click', loadProfile);
     loadProfile();
-    // Open-build test: use a nonexistent filename, inspect the message, then
-    // RESTORE PROFILE and reload successfully before reviewing and merging.
   </script>
 </body>
 </html>
