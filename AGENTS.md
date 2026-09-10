@@ -5,8 +5,9 @@ unclear, ask before editing. This file briefs the agent; it does not run the pag
 
 ## My reader rule
 
-[Replace with one observable rule. Example: explain each project in ordinary
-language before showing technical terms, without inventing a missing purpose.]
+State which project to ask about, in one plain sentence, before any count, star
+total or date appears on the page, and mark any project with no description as
+"Purpose not stated" instead of guessing one.
 
 ## Scope and evidence
 
